@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -25,6 +26,11 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-      - run: dotnet restore MiniPrint.sln
-      - run: dotnet test MiniPrint.sln --configuration Release --no-restore
-      - run: dotnet publish src/MiniPrint.Server/MiniPrint.Server.csproj --configuration Release --runtime win-x64 --self-contained true
+      - name: Test and package Windows release
+        shell: pwsh
+        run: ./scripts/build-release.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiniPrint-win-x64
+          path: artifacts/MiniPrint-win-x64.zip
+          if-no-files-found: error
