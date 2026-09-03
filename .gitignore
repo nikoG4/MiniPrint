@@ -8,3 +8,11 @@ artifacts/
 data/
 *.log
 *.zip
+.env
+.env.*
+appsettings.*.json
+secrets.json
+*.pfx
+*.p12
+*.pem
+*.key
